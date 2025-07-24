@@ -29,7 +29,7 @@ Esto iniciará:
 PostgreSQL (base de datos, con el script de inicialización)
 La aplicación Spring Boot (backend en Java)
 Al finalizar, tendrás la API corriendo en:
-http://localhost:8081/api/
+http://localhost:8080/api/
 
 Variables de entorno principales (puedes personalizarlas en docker-compose.yml):
 SPRING_DATASOURCE_URL
