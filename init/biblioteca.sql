@@ -209,17 +209,11 @@ ALTER FUNCTION public.obtener_autor_por_id(p_id integer) OWNER TO postgres;
 -- Name: obtener_libro_por_id(integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION public.obtener_libro_por_id(p_id integer) RETURNS TABLE(id integer, titulo character varying, genero character varying, anio_publicacion integer, precio numeric, stock integer, autor_id integer, estado boolean, fecha_creacion timestamp without time zone, usuario_creacion character varying, fecha_modificacion timestamp without time zone, usuario_modificacion character varying)
+CREATE FUNCTION public.obtener_libro_por_id(p_id integer) RETURNS TABLE(id integer, titulo character varying, autor_id integer, anio_publicacion integer, genero character varying, precio numeric, stock integer, estado boolean, fecha_creacion timestamp without time zone, usuario_creacion character varying, fecha_modificacion timestamp without time zone, usuario_modificacion character varying)
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    RETURN QUERY
-    SELECT 
-        id, titulo, genero, anio_publicacion, precio, stock,
-        autor_id, estado, fecha_creacion, usuario_creacion,
-        fecha_modificacion, usuario_modificacion
-    FROM libros
-    WHERE id = p_id;
+  RETURN QUERY SELECT l.* FROM libros l WHERE l.id = p_id;
 END;
 $$;
 
@@ -261,15 +255,22 @@ CREATE FUNCTION public.obtener_todos_libros() RETURNS TABLE(id integer, titulo c
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    RETURN QUERY
-    SELECT 
-        id, titulo, genero, anio_publicacion, precio, stock,
-        autor_id, estado, fecha_creacion, usuario_creacion,
-        fecha_modificacion, usuario_modificacion
-    FROM libros
-    /* Si deseas solo activos, descomenta la siguiente línea:
-    WHERE estado = TRUE */
-    ORDER BY titulo;
+  RETURN QUERY
+  SELECT 
+    l.id,
+    l.titulo,
+    l.genero,
+    l.anio_publicacion,
+    l.precio,
+    l.stock,
+    l.autor_id,
+    l.estado,
+    l.fecha_creacion,
+    l.usuario_creacion,
+    l.fecha_modificacion,
+    l.usuario_modificacion
+  FROM libros AS l
+  ORDER BY l.titulo;
 END;
 $$;
 
@@ -415,6 +416,8 @@ COPY public.autores (id, nombre, nacionalidad, fecha_nacimiento, estado, fecha_c
 --
 
 COPY public.libros (id, titulo, autor_id, anio_publicacion, genero, precio, stock, estado, fecha_creacion, usuario_creacion, fecha_modificacion, usuario_modificacion) FROM stdin;
+5	Cien Años de Soledad (Edición remasterizada)	4	1967	Realismo mágico	35.00	15	t	2025-07-24 15:53:21.249721	admin_system	2025-07-24 16:09:45.666496	admin_system
+6	Cien Años de Soledad	4	1967	Realismo mágico	29.90	20	t	2025-07-24 16:17:10.484534	admin_system	\N	\N
 \.
 
 
@@ -429,7 +432,7 @@ SELECT pg_catalog.setval('public.autores_id_seq', 14, true);
 -- Name: libros_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.libros_id_seq', 1, false);
+SELECT pg_catalog.setval('public.libros_id_seq', 6, true);
 
 
 --

@@ -6,7 +6,6 @@
 git clone https://github.com/nicolasback04/proyecto-informa.git
 cd proyecto-informa
 ```
-![Clonación del repositorio](docs/img/instalacion-clonacion.png)
 
 ---
 
